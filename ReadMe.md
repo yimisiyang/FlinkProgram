@@ -73,5 +73,60 @@ taskmanager.numberOfTaskSlots: 4
 
 flink提供了两种在yarn上运行的模式，分别为Session-Cluster和Per-Job-Cluster模式。
 
+# 8 安装部署clickhouse
+
+安装rpm包：包位于阿里云的 `/opt/software/clickhose` 目录，安装过程如下：
+
+![](https://raw.githubusercontent.com/yimisiyang/cloudimage/master/Image/20211103203731.png)
+
+启动并设置为开机自启
+
+```shell
+systemctl start clickhouse-server
+/usr/lib/systemd/systemd-sysv-install enable clickhouse-server
+```
+
+## 8.1 使用DBeaver连接clickhouse
+
+DBeaver的配置如下所示，用户名为default, 密码无：
+
+![](https://raw.githubusercontent.com/yimisiyang/cloudimage/master/Image/20211103204147.png)
+
+**问题记录：**
+
+Clickhouse连接端口默认8123，但是Clickhouse默认情况下不允许其他设备进行http连接，所以需要更改clickhouse的默认配置:
+
+```shell
+vim /etc/clickhouse-server/config.xml
+```
+
+新增一行，默认是注释的，让本地服务可以远程连接远程部署的Clickhouse服务，如下所示：
+
+![](https://raw.githubusercontent.com/yimisiyang/cloudimage/master/Image/20211103204442.png)
+
+**参考文章：**https://blog.51cto.com/u_12469213/2861109
+
+## 8.2 下载数据集并导入
+
+**hits_v1表：**
+
+```shell
+curl -O https://datasets.clickhouse.com/hits/partitions/hits_v1.tar
+tar xvf hits_v1.tar -C /var/lib/clickhouse # path to ClickHouse data directory
+# check permissions on unpacked data, fix if required
+sudo service clickhouse-server restart
+clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
+```
+
+**visits_v1表：**
+
+```shell
+curl -O https://datasets.clickhouse.com/visits/partitions/visits_v1.tar
+tar xvf visits_v1.tar -C /var/lib/clickhouse # path to ClickHouse data directory
+# check permissions on unpacked data, fix if required
+sudo service clickhouse-server restart
+clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
+```
+
 
 
