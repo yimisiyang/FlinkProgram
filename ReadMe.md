@@ -19,24 +19,42 @@ Exception in thread "main" java.lang.NullPointerException: Cannot find compatibl
 
 问题原因是： `flink-streaming-scala_2.12` 依赖的作用域不对。
 
-# 2. flink流处理时设置并行度
+# 2Flink Demo问题 
+
+问题现象：No ExecutorFactory found to execute the application
+
+解决方式：引入flink-client依赖，该问题从flink 1.11版本之后出现
+
+```javascript
+<dependency>
+    <groupId>org.apache.flink</groupId>
+    <artifactId>flink-clients_2.11</artifactId>
+    <version>${flink.version}</version>
+</dependency>
+```
+
+问题原因：
+
+![](https://raw.githubusercontent.com/yimisiyang/cloudimage/master/Image/20211104102347.png)
+
+# 3 flink流处理时设置并行度
 
 ```java
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 env.setParallelism(8); //默认以计算机CPU核数作为并行度
 ```
 
-# 3. flink部署安装
+# 4 flink部署安装
 
-阿里云的opt目录下已部署完成
+阿里云的opt目录下已部署完成，版本1.14.0 ，scala版本为2.12
 
-# 4. nc命令
+# 5 nc命令
 
 ```shell
 nc -lk 7777      #用来发socket数据流
 ```
 
-# 5. slot太小导致跑不起来
+# 6 slot太小导致跑不起来
 
 将flink配置文件中的以下参数改为4（推荐设置为CPU的核心数）
 
@@ -50,7 +68,7 @@ taskmanager.numberOfTaskSlots: 4
 
 2）将job的并行度调低
 
-# 6. 提交作业的方式
+# 7 提交作业的方式
 
 1）通过web页面提交
 
@@ -67,13 +85,13 @@ taskmanager.numberOfTaskSlots: 4
 ./bin/flink cancel 59868f5e539c7322f876c517986ff375 # 取消调某个任务，cancel后跟任务id
 ```
 
-# 7. Yarn 模式
+# 8 Yarn 模式
 
 以yarn模式部署flink任务时，要求flink是有Hadoop支持的版本，Hadoop环境需要保证版本在2.2以上，并且集群中安装有HDFS服务。
 
 flink提供了两种在yarn上运行的模式，分别为Session-Cluster和Per-Job-Cluster模式。
 
-# 8 安装部署clickhouse
+# 9 安装部署clickhouse
 
 安装rpm包：包位于阿里云的 `/opt/software/clickhose` 目录，安装过程如下：
 
@@ -86,7 +104,7 @@ systemctl start clickhouse-server
 /usr/lib/systemd/systemd-sysv-install enable clickhouse-server
 ```
 
-## 8.1 使用DBeaver连接clickhouse
+## 9.1 使用DBeaver连接clickhouse
 
 DBeaver的配置如下所示，用户名为default, 密码无：
 
@@ -106,7 +124,7 @@ vim /etc/clickhouse-server/config.xml
 
 **参考文章：**https://blog.51cto.com/u_12469213/2861109
 
-## 8.2 下载数据集并导入
+## 9.2 下载数据集并导入
 
 **hits_v1表：**
 
@@ -128,5 +146,19 @@ sudo service clickhouse-server restart
 clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
 ```
 
+**clickhouse创建表(students)：**
 
+```sql
+CREATE TABLE students (
+	`id` UInt8,
+	`name` String,
+	`age` UInt8
+)ENGINE = TinyLog
+```
+
+**在students中插入数据：**
+
+```sql
+insert into students values(3, '李四', 19);
+```
 
