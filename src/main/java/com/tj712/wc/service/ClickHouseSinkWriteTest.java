@@ -17,9 +17,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class ClickHouseSinkWriteTest {
     public static void main(String[] args) throws Exception {
         // 构造Flink执行环境
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironment();
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         // 设置flink的并行度
-        env.setParallelism(1);
+        env.setParallelism(4);
 
         // source, 从什么地方获取数据
         String path = "F:\\Program\\FlinkProgram\\src\\main\\resources\\Hello.txt";

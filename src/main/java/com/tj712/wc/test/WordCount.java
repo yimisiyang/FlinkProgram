@@ -1,4 +1,4 @@
-package com.tj712.wc;
+package com.tj712.wc.test;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.ExecutionEnvironment;

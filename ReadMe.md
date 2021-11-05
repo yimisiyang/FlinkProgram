@@ -76,7 +76,7 @@ taskmanager.numberOfTaskSlots: 4
 
 ```shell
 # 提交作业
-./bin/flink run -c com.tj712.wc.StreamWordCount -p 3 F:\Program\FlinkProgram\src\main\java\com\tj712\wc\StreamWordCount.java
+./bin/flink run -c com.tj712.wc.test.StreamWordCount -p 3 F:\Program\FlinkProgram\src\main\java\com\tj712\wc\StreamWordCount.java
 # 查看运行的作业
 ./bin/flink list
 # 查看所有作业
@@ -160,5 +160,26 @@ CREATE TABLE students (
 
 ```sql
 insert into students values(3, '李四', 19);
+```
+
+# 10 kafka启动并测试消费数据
+
+**1 启动Kafka服务端**
+
+```shell
+# 启动zookeeper
+./binzkServer.sh restart
+# 启动kafka服务端
+./bin/kafka-server-start.sh -daemon ./config/server.properties
+```
+
+**2 测试kafka收数**
+
+```shell
+# 消费者创建sensor topic
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic sensor
+# 生产者创建 sensor topic 并生产数据
+kafka-console-producer.sh --broker-list localhost:9092 --topic sensor
+>sensor_1,154778199L,35.2  # 该数据为生产的数据
 ```
 
