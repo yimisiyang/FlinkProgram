@@ -1,4 +1,4 @@
-package com.tj712.apitest.source;
+package com.tj712.wc.service;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -6,35 +6,38 @@ import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * Created with IntelliJ IDEA.
  *
- * @Date: 2021/11/4
- * @Time: 20:16
+ * @Date: 2021/11/9
+ * @Time: 13:59
  * @author: ThinkPad
+ *
+ * flink 流处理消费kafka数据源，定时批量将数据写入MySQL、CK
  */
-public class SourceTest3_Kafka {
-    public static void main(String[] args) throws Exception{
-        //创建执行环境
+public class Driver {
+    public static void main(String[] args) throws Exception {
+        // 1. 创建flink 运行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // 设置并行度，为了保证有序可以设置并行度为1
-        env.setParallelism(4);
 
-        //从kafka中读取数据
+        // 2. 连接kafka数据源
         KafkaSource<String> source = KafkaSource.<String>builder()
                 .setBootstrapServers("39.97.181.124:9092")
                 .setTopics("sensor")
                 .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new SimpleStringSchema())
                 .build();
-
         DataStreamSource<String> dataStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source");
+        // 3. 对数据进行分组处理
 
-        //打印输出
-        dataStream.print();
 
-        //执行
-        env.execute();
+        //
+
+
+        //
+
     }
+
 }

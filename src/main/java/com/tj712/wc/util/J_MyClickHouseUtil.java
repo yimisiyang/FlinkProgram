@@ -1,6 +1,7 @@
 package com.tj712.wc.util;
 
 import com.tj712.wc.entity.J_Student;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 
@@ -26,7 +27,8 @@ public class J_MyClickHouseUtil extends RichSinkFunction<J_Student> {
     @Override
     public void open(Configuration parameters) throws Exception {
         super.open(parameters);
-        connection = ClickHouseUtil.getConn("39.97.181.124",8123,"default");
+        BasicDataSource dataSource = new BasicDataSource();
+        connection = ClickHouseUtil.getConn(dataSource);
     }
     @Override
     public void close() throws Exception {
