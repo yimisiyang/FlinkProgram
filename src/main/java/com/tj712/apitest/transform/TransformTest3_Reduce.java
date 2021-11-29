@@ -2,8 +2,8 @@ package com.tj712.apitest.transform;
 
 import com.tj712.apitest.beans.SensorReading;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
@@ -13,11 +13,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * Created with IntelliJ IDEA.
  *
- * @Date: 2021/11/16
- * @Time: 21:31
+ * @Date: 2021/11/29
+ * @Time: 19:36
  * @author: ThinkPad
  */
-public class TransformTest2_RollingAggregation {
+public class TransformTest3_Reduce {
     public static void main(String[] args) throws Exception {
         //1.构建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -26,23 +26,26 @@ public class TransformTest2_RollingAggregation {
         DataStreamSource<String> inputStream = env.readTextFile("F:\\Program\\FlinkProgram\\src\\main\\resources\\sensor.txt");
 
         //3. 转换成SensorReading类型
-        DataStream<SensorReading> dataStream = inputStream.map(new MapFunction<String, SensorReading>() {
+        DataStream<SensorReading> streamOperator = inputStream.map(new MapFunction<String, SensorReading>() {
             @Override
             public SensorReading map(String value) throws Exception {
-                String[] fields = value.split(",");
-                return new SensorReading(fields[0],new Long(fields[1]),new Double(fields[2]));
+                String[] split = value.split(",");
+                return (new SensorReading(split[0], new Long(split[1]), new Double(split[2])));
             }
         });
 
         //4.分组
-        //KeyedStream<SensorReading, Tuple> keyedStream = dataStream.keyBy("id");
-        KeyedStream<SensorReading, String> keyedStream = dataStream.keyBy((KeySelector<SensorReading, String>) SensorReading::getId);
+        KeyedStream<SensorReading, String> keyedStream = streamOperator.keyBy((KeySelector<SensorReading, String>) SensorReading::getId);
 
-        //5.滚动聚合
-        SingleOutputStreamOperator<SensorReading> resultStream = keyedStream.maxBy("temperature");
-        resultStream.print();
+        //5.分组聚合（取最大温度值以及最新的时间戳）,value1为前面聚合出来的数据，value2为最新的数据
+        keyedStream.reduce(new ReduceFunction<SensorReading>() {
+            @Override
+            public SensorReading reduce(SensorReading value1, SensorReading value2) throws Exception {
+                return (new SensorReading(value1.getId(), value2.getTimestamp(), Math.max(value1.getTemperature(),value2.getTemperature())));
+            }
+        });
 
         //6.执行
-        env.execute();
+        env.execute("ReduceJob");
     }
 }

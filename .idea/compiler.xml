@@ -10,5 +10,8 @@
         <module name="FlinkProgram" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bloodVolume" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
