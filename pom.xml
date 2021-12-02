@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <flink-version>1.13.3</flink-version>
     </properties>
 
     <dependencies>
@@ -18,14 +19,14 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-streaming-java -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -33,27 +34,27 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-clients_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-planner -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-api-scala-bridge -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-scala-bridge_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-table-common -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-common</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -61,7 +62,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -76,13 +77,13 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-base</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.bahir/flink-connector-redis -->
@@ -95,16 +96,21 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-elasticsearch7_2.11</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-cep_2.12</artifactId>
+            <version>${flink-version}</version>
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-state-processor-api -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-state-processor-api_2.12</artifactId>
-            <version>1.13.3</version>
+            <version>${flink-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -142,6 +148,22 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.16</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.76</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

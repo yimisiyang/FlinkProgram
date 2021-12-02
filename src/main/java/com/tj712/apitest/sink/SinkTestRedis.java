@@ -4,7 +4,6 @@ import com.tj712.apitest.beans.SensorReading;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.redis.RedisSink;
 import org.apache.flink.streaming.connectors.redis.common.config.FlinkJedisPoolConfig;
 import org.apache.flink.streaming.connectors.redis.common.mapper.RedisCommand;
 import org.apache.flink.streaming.connectors.redis.common.mapper.RedisCommandDescription;
@@ -17,7 +16,7 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.RedisMapper;
  * @Time: 20:29
  * @author: ThinkPad
  */
-public class SinkTest2_Redis {
+public class SinkTestRedis {
     public static void main(String[] args) throws Exception {
         //1.创建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -37,7 +36,8 @@ public class SinkTest2_Redis {
                 .setPort(6379)
                 .build();
 
-        streamOperator.addSink(new RedisSink<>(config, new MyRedisMapper()));
+        //treamOperator.addSink(new RedisSink<>(config, new MyRedisMapper()));
+        streamOperator.addSink(MySink.myRedisSink("localhost",6667));
 
 
         //5.执行
