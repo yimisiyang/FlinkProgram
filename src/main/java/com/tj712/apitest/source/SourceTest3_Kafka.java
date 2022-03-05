@@ -18,7 +18,7 @@ public class SourceTest3_Kafka {
     public static void main(String[] args) throws Exception{
         //创建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // 设置并行度，为了保证有序可以设置并行度为1
+        // 设置并行度
         env.setParallelism(4);
 
         //从kafka中读取数据

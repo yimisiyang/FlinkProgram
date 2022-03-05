@@ -17,10 +17,9 @@ public class SourceTest1_Collection {
     public static void main(String[] args) throws Exception{
 
         // 创建执行环境
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-        // 设置并行度
-        env.setParallelism(4);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment
+                .getExecutionEnvironment()
+                .setParallelism(4);
 
         // 从集合中读取数据,包装成DataStream
         DataStreamSource<SensorReading> dataStreamSource = env.fromCollection(Arrays.asList(
